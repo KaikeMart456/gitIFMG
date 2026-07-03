@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CRUD JS</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        margin: 30px;
+    }
+
+    button{
+        margin-left: 5px;
+    }
+
+    li{
+        margin: 10px 0;
+    }
+</style>
+
+</head>
+<body>
+
+<h2>Controle de Itens</h2>
+
+<input type="text" id="novoItem">
+
+<button id="btnSalvar">
+    Adicionar
+</button>
+
+<ul id="lista"></ul>
+
+<script>
+
+let itens = [];
+let indiceEdicao = null;
+
+const input = document.getElementById("novoItem");
+const lista = document.getElementById("lista");
+const botao = document.getElementById("btnSalvar");
+
+function renderizarLista() {
+    lista.innerHTML = "";
+
+    itens.forEach((item, index) => {
+
+        lista.innerHTML += `
+            <li>
+                ${item}
+                <button onclick="atualizarItem(${index})">
+                    Atualizar
+                </button>
+
+                <button onclick="removerItem(${index})">
+                    Remover
+                </button>
+            </li>
+        `;
+
+    });
+}
+
+function adicionarItem() {
+
+    const novoItem = input.value;
+
+    if (novoItem === "") return;
+
+    itens.push(novoItem);
+
+    input.value = "";
+
+    renderizarLista();
+}
+
+function atualizarItem(index){
+
+    input.value = itens[index];
+
+    indiceEdicao = index;
+
+    botao.textContent = "Salvar";
+}
+
+function salvarItem(){
+
+    itens[indiceEdicao] = input.value;
+
+    input.value = "";
+
+    indiceEdicao = null;
+
+    botao.textContent = "Adicionar";
+
+    renderizarLista();
+}
+
+function removerItem(index){
+
+    itens.splice(index,1);
+
+    renderizarLista();
+}
+
+botao.onclick = function(){
+
+    if(indiceEdicao === null){
+        adicionarItem();
+    }else{
+        salvarItem();
+    }
+
+}
+
+</script>
+
+</body>
+</html>
